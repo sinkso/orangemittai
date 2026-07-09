@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orange Mittai — Order South Indian Snacks & Sweets</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:        #fdf3e8;
+  --cream-mid:    #f5e0c4;
+  --orange:       #d4731a;
+  --orange-light: #e8892b;
+  --brown:        #5c3317;
+  --text:         #3d1f0a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+header {
+  background: linear-gradient(135deg, #d4731a, #8b4513);
+  color: #fff;
+  padding: 20px 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+header img.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.3);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+  flex-shrink: 0;
+}
+
+.header-text { flex: 1; }
+
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.6rem;
+  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+  text-shadow: 2px 3px 0 rgba(0,0,0,0.2);
+}
+
+header p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.header-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+}
+
+.info-section {
+  background: linear-gradient(135deg, #fef6ec, #faecd8);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  border-left: 4px solid var(--orange);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.info-section strong { color: var(--brown); }
+.info-section p { margin-bottom: 6px; }
+.info-section p:last-child { margin-bottom: 0; }
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.section-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.25rem;
+  margin: 24px 0 12px;
+  color: var(--text);
+}
+
+.section-subtext {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #8a6a50;
+  font-style: italic;
+  margin: -8px 0 12px;
+  line-height: 1.4;
+}
+
+/* Customer info */
+.customer-section {
+  background: var(--cream-mid);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.customer-section label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+.customer-section label .required {
+  color: #c0392b;
+  margin-left: 2px;
+}
+
+.customer-section input.invalid { border-color: #c0392b; }
+
+.validation-msg {
+  color: #c0392b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 6px;
+  display: none;
+}
+
+.customer-section label:first-child { margin-top: 0; }
+
+.customer-section input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.customer-section input:focus { border-color: var(--orange); }
+
+.address-row { display: flex; gap: 10px; }
+.address-row > div { flex: 1; }
+
+/* Product cards */
+.product-card {
+  background: var(--cream-mid);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.product-card.unavailable {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.product-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+  gap: 10px;
+}
+
+.product-header:hover { background: rgba(255,255,255,0.35); }
+
+.product-header.selected {
+  background: var(--orange);
+  color: #fff;
+}
+
+.product-emoji { font-size: 1.5rem; }
+
+.product-info { flex: 1; min-width: 0; }
+
+.product-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+}
+
+.product-price-hint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-top: 1px;
+}
+
+.product-header.selected .product-price-hint { opacity: 0.85; }
+
+.product-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  background: rgba(255,255,255,0.5);
+  flex-shrink: 0;
+}
+
+.product-header.selected .product-check {
+  background: #fff;
+  color: var(--orange);
+  border-color: #fff;
+}
+
+.unavailable-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(0,0,0,0.15);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Detail area (weight + qty) */
+.detail-area {
+  display: none;
+  padding: 8px 16px 14px;
+}
+
+.product-card.open .detail-area { display: block; }
+
+.detail-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+
+.weight-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.weight-btn {
+  padding: 8px 18px;
+  border: 2px solid #e8d5c0;
+  border-radius: 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff;
+  color: var(--text);
+  transition: all 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.weight-btn:hover {
+  border-color: var(--orange);
+  background: #fff5e6;
+  color: var(--orange);
+}
+
+.weight-btn.chosen {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+  box-shadow: 0 2px 6px rgba(212,115,26,0.3);
+}
+
+.qty-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--text);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.15s;
+}
+
+.qty-btn:hover {
+  background: var(--text);
+  color: var(--cream);
+}
+
+.qty-value {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+}
+
+.line-total {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.05rem;
+  color: var(--orange);
+}
+
+/* Additional details */
+.questions-section {
+  background: var(--cream-mid);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.question-group { margin-bottom: 14px; }
+.question-group:last-child { margin-bottom: 0; }
+
+.question-group label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.question-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  background: rgba(255,255,255,0.7);
+  color: var(--text);
+  outline: none;
+  resize: vertical;
+  min-height: 50px;
+  transition: border-color 0.2s;
+}
+
+.question-group textarea:focus { border-color: var(--orange); }
+
+/* Coupon toggle */
+.question-group .coupon-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.2);
+  border-radius: 24px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.toggle-slider:before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider { background: var(--orange); }
+.toggle-switch input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+.coupon-input-wrap { margin-top: 10px; }
+
+.coupon-input-wrap input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+
+.coupon-input-wrap input[type="text"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(255,255,255,0.5);
+}
+
+.coupon-input-wrap input[type="text"]:focus { border-color: var(--orange); }
+
+.coupon-status {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 6px;
+  color: #2e7d32;
+}
+
+/* Order summary */
+.summary-section {
+  background: var(--cream-mid);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.summary-empty {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  padding: 12px 0;
+}
+
+.summary-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.summary-item:last-child { border-bottom: none; }
+
+.summary-product-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.summary-detail-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-top: 2px;
+  padding-left: 12px;
+}
+
+.summary-subtotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  opacity: 0.75;
+}
+
+.summary-discount {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-top: 4px;
+  color: #2e7d32;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 2px solid var(--orange);
+}
+
+/* WhatsApp button */
+.wa-button {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  color: #fff;
+  background: #25d366;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s, opacity 0.2s;
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
+}
+
+.wa-button:hover { background: #1eba57; }
+
+.wa-button:disabled, .wa-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  header h1 { font-size: 1.9rem; }
+  header img.logo { width: 56px; height: 56px; }
+  header { padding: 14px 12px; }
+  .header-inner { gap: 10px; }
+  header p { font-size: 0.8rem; }
+}
+@media (max-width: 400px) {
+  header h1 { font-size: 1.7rem; }
+  header img.logo { width: 48px; height: 48px; }
+  .header-inner { gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <img src="orange_mittai_logo.png" alt="Orange Mittai Logo" class="logo">
+    <div class="header-text">
+      <h1>Orange Mittai</h1>
+      <p><b>Authentic South Indian Snacks & Sweets</b></p>
+      <div class="header-badge">HOMEMADE WITH LOVE</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="section-title">Your Details</div>
+  <div class="customer-section">
+    <label for="cust-name">Name <span class="required">*</span></label>
+    <input type="text" id="cust-name" placeholder="Your name">
+
+    <label for="cust-phone">Phone Number <span class="required">*</span></label>
+    <input type="tel" id="cust-phone" placeholder="+31 6 1234 5678" value="+31 ">
+
+    <label>Delivery Address <span class="required">*</span></label>
+    <div class="address-row">
+      <div>
+        <input type="text" id="cust-postal" placeholder="Postal code (e.g. 1316 AB)">
+      </div>
+      <div>
+        <input type="text" id="cust-door" placeholder="Door # (e.g. 12)">
+      </div>
+    </div>
+    <div class="validation-msg" id="customer-validation-msg">Please fill in all your details above to place an order.</div>
+  </div>
+
+  <div class="info-section">
+    <p><b>How to Order</b></p>
+    <p>Browse our selection of <strong>savory snacks, sweets & assortments</strong>. Select your favorites, choose weight & quantity, and send your order via WhatsApp!</p>
+    <p>All items are <strong>homemade fresh</strong> with authentic South Indian recipes.</p>
+  </div>
+
+  <div class="section-title">Savory</div>
+  <div class="section-subtext">Crispy, crunchy & irresistible — made the traditional way.</div>
+  <div id="savory-grid"></div>
+
+  <div class="section-title">Sweets</div>
+  <div class="section-subtext">Classic South Indian sweets for every occasion.</div>
+  <div id="sweets-grid"></div>
+
+  <div class="section-title">Assortment</div>
+  <div class="section-subtext">Mixed packs & nutritious blends.</div>
+  <div id="assortment-grid"></div>
+
+  <div class="section-title">Additional Details</div>
+  <div class="questions-section">
+    <div class="question-group">
+      <label>Any special requests or notes?</label>
+      <textarea id="special-instructions" placeholder="Allergies, delivery preferences, special requests..."></textarea>
+    </div>
+    <div class="question-group">
+      <label class="coupon-toggle-row" for="coupon-toggle">
+        <span>I have a coupon / discount code</span>
+        <div class="toggle-switch">
+          <input type="checkbox" id="coupon-toggle">
+          <span class="toggle-slider"></span>
+        </div>
+      </label>
+      <div id="coupon-input-group" class="coupon-input-wrap">
+        <input type="text" id="coupon-code" placeholder="Enter coupon code" disabled>
+        <div class="coupon-status" id="coupon-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Order Summary</div>
+  <div class="section-subtext">Taste the tradition of South India.</div>
+  <div class="summary-section" id="order-summary"></div>
+
+  <button class="wa-button disabled" id="wa-btn" disabled>Submit Order via WhatsApp</button>
+</div>
+
+<script>
+(function() {
+
+  /* ── CONFIGURATION ── */
+
+  var SITE_OPEN = true;
+
+  var PRODUCTS = [
+    { id: 'mixture',             name: 'Mixture',             emoji: '🍿', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'karasev',             name: 'Karasev',             emoji: '🌾', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'milagu_sev',          name: 'Milagu Sev',          emoji: '🌶️', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'karaboondi',          name: 'Karaboondi',          emoji: '🟡', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'seeval',              name: 'Seeval',              emoji: '🍜', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'ribbon_seeval',       name: 'Ribbon Seeval',       emoji: '🎀', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'onion_murukku',       name: 'Onion Murukku',       emoji: '🧅', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'garlic_murukku',      name: 'Garlic Murukku',      emoji: '🧄', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'nendram_chips',       name: 'Nendram Chips',       emoji: '🍌', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'kolli_chips',         name: 'Kolli Chips',         emoji: '🍃', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'kappa_chips',         name: 'Kappa Chips',         emoji: '🥔', category: 'savory',     available: true,  price_per_250g: 5.00 },
+    { id: 'chikki_byte',         name: 'Chikki Byte',         emoji: '🥜', category: 'sweets',     available: true,  price_per_250g: 6.00 },
+    { id: 'smashed_chikki_byte', name: 'Smashed Chikki Byte', emoji: '🥜', category: 'sweets',     available: true,  price_per_250g: 6.00 },
+    { id: 'iruttukadai_halwa',   name: 'Iruttukadai Halwa',   emoji: '🍮', category: 'sweets',     available: true,  price_per_250g: 8.00 },
+    { id: 'abc_mix',             name: 'ABC Mix',             emoji: '🎁', category: 'assortment', available: true,  price_per_250g: 6.00 },
+    { id: 'growlac',             name: 'Growlac',             emoji: '🌿', category: 'assortment', available: true,  price_per_250g: 7.00 },
+    { id: 'health_mix',          name: 'Health Mix',          emoji: '💪', category: 'assortment', available: true,  price_per_250g: 7.00 }
+  ];
+
+  var WEIGHTS = [250, 500];
+
+  var WA_NUMBER = '31645846028';
+
+  // Google Apps Script Web App URL — replace with your deployed URL
+  var GOOGLE_SCRIPT_URL = '';
+
+  // Google Sheet CSV URLs for loading product config
+  var SPREADSHEET_ID = '';
+  var CONFIG_CSV_URL   = SPREADSHEET_ID ? 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Config' : '';
+  var PRODUCTS_CSV_URL = SPREADSHEET_ID ? 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Products' : '';
+
+
+  /* ── CSV PARSER ── */
+
+  function parseCSV(text) {
+    var lines = text.split('\n');
+    if (lines.length < 2) return [];
+    var headers = parseCSVRow(lines[0]);
+    var rows = [];
+    for (var i = 1; i < lines.length; i++) {
+      if (lines[i].trim() === '') continue;
+      var values = parseCSVRow(lines[i]);
+      var row = {};
+      for (var j = 0; j < headers.length; j++) {
+        row[headers[j].toLowerCase().trim()] = (values[j] || '').trim();
+      }
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  function parseCSVRow(line) {
+    var result = [];
+    var current = '';
+    var inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (inQuotes) {
+        if (ch === '"' && i + 1 < line.length && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else if (ch === '"') {
+          inQuotes = false;
+        } else {
+          current += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          result.push(current);
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+    }
+    result.push(current);
+    return result;
+  }
+
+  function applyConfigFromSheet(configRows, productRows) {
+    for (var i = 0; i < configRows.length; i++) {
+      var key = (configRows[i].key || '').toUpperCase();
+      var val = configRows[i].value || '';
+      if (key === 'SITE_OPEN') SITE_OPEN = val.toUpperCase() === 'TRUE';
+    }
+
+    if (productRows && productRows.length > 0) {
+      var newProducts = [];
+      for (var p = 0; p < productRows.length; p++) {
+        var r = productRows[p];
+        var pid = (r.id || '').toLowerCase().trim();
+        if (!pid) continue;
+        newProducts.push({
+          id: pid,
+          name: r.name || pid,
+          emoji: r.emoji || '🍬',
+          category: (r.category || 'savory').toLowerCase().trim(),
+          available: (r.available || '').toUpperCase() === 'TRUE',
+          price_per_250g: parseFloat(r.price_per_250g) || 0
+        });
+      }
+      if (newProducts.length > 0) PRODUCTS = newProducts;
+    }
+  }
+
+  var configSource = 'defaults';
+
+  function showConfigSource() {
+    var badge = document.createElement('div');
+    badge.style.cssText = 'position:fixed;bottom:6px;right:6px;width:6px;height:6px;border-radius:50%;pointer-events:none;opacity:0.5;';
+    badge.style.background = configSource === 'sheet' ? '#4caf50' : '#d4731a';
+    document.body.appendChild(badge);
+  }
+
+  function loadConfigFromSheet() {
+    if (!SPREADSHEET_ID) {
+      configSource = 'defaults';
+      initApp();
+      return;
+    }
+
+    document.querySelector('.container').style.opacity = '0.4';
+
+    var configDone = false, productsDone = false;
+    var configRows = [], productRows = [];
+    var sheetLoaded = false;
+
+    function checkDone() {
+      if (configDone && productsDone) {
+        if (sheetLoaded) {
+          applyConfigFromSheet(configRows, productRows);
+          configSource = 'sheet';
+        } else {
+          configSource = 'defaults';
+        }
+        document.querySelector('.container').style.opacity = '1';
+        initApp();
+      }
+    }
+
+    fetch(CONFIG_CSV_URL).then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function(text) {
+      if (text.trim().charAt(0) !== '<') {
+        configRows = parseCSV(text);
+        sheetLoaded = true;
+      }
+    }).catch(function(err) {
+      console.warn('Config fetch failed:', err);
+    }).finally(function() {
+      configDone = true;
+      checkDone();
+    });
+
+    fetch(PRODUCTS_CSV_URL).then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function(text) {
+      if (text.trim().charAt(0) !== '<') {
+        productRows = parseCSV(text);
+        sheetLoaded = true;
+      }
+    }).catch(function(err) {
+      console.warn('Products fetch failed:', err);
+    }).finally(function() {
+      productsDone = true;
+      checkDone();
+    });
+  }
+
+
+  /* ── STATE ── */
+
+  var productSelected = {};
+  var productWeight   = {};
+  var productQty      = {};
+  var hasCoupon       = null;
+  var couponCode      = '';
+  var discountApplied = false;
+
+
+  /* ── VALIDATION ── */
+
+  function getCustomerDetails() {
+    return {
+      name:   document.getElementById('cust-name').value.trim(),
+      phone:  document.getElementById('cust-phone').value.trim(),
+      postal: document.getElementById('cust-postal').value.trim(),
+      door:   document.getElementById('cust-door').value.trim()
+    };
+  }
+
+  function isCustomerComplete() {
+    var c = getCustomerDetails();
+    return c.name.length > 0 && c.phone.length > 4 && c.postal.length > 0 && c.door.length > 0;
+  }
+
+
+  /* ── RENDER ── */
+
+  function renderAll() {
+    renderCategoryGrid('savory', 'savory-grid');
+    renderCategoryGrid('sweets', 'sweets-grid');
+    renderCategoryGrid('assortment', 'assortment-grid');
+    renderCoupon();
+    renderSummary();
+  }
+
+  function renderCategoryGrid(category, gridId) {
+    var grid = document.getElementById(gridId);
+    grid.innerHTML = '';
+
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      if (PRODUCTS[i].category !== category) continue;
+      (function(product) {
+        var card = document.createElement('div');
+        card.className = 'product-card';
+        if (!product.available) card.className += ' unavailable';
+        if (productSelected[product.id]) card.className += ' open';
+
+        // Header
+        var header = document.createElement('div');
+        header.className = 'product-header';
+        if (productSelected[product.id]) header.className += ' selected';
+
+        var emojiSpan = document.createElement('span');
+        emojiSpan.className = 'product-emoji';
+        emojiSpan.textContent = product.emoji;
+
+        var infoDiv = document.createElement('div');
+        infoDiv.className = 'product-info';
+
+        var nameDiv = document.createElement('div');
+        nameDiv.className = 'product-name';
+        nameDiv.textContent = product.name;
+
+        var priceHint = document.createElement('div');
+        priceHint.className = 'product-price-hint';
+        priceHint.textContent = '€' + product.price_per_250g.toFixed(2) + ' / 250g';
+
+        infoDiv.appendChild(nameDiv);
+        infoDiv.appendChild(priceHint);
+
+        var checkSpan = document.createElement('span');
+        checkSpan.className = 'product-check';
+        checkSpan.textContent = productSelected[product.id] ? '✓' : '';
+
+        header.appendChild(emojiSpan);
+        header.appendChild(infoDiv);
+
+        if (!product.available) {
+          var unavailLabel = document.createElement('span');
+          unavailLabel.className = 'unavailable-label';
+          unavailLabel.textContent = 'Unavailable';
+          header.appendChild(unavailLabel);
+        }
+
+        header.appendChild(checkSpan);
+
+        header.addEventListener('click', function() {
+          productSelected[product.id] = !productSelected[product.id];
+          if (!productSelected[product.id]) {
+            productWeight[product.id] = null;
+            productQty[product.id] = 0;
+          }
+          renderAll();
+        });
+
+        card.appendChild(header);
+
+        // Detail area
+        var detailArea = document.createElement('div');
+        detailArea.className = 'detail-area';
+
+        var weightLabel = document.createElement('div');
+        weightLabel.className = 'detail-label';
+        weightLabel.textContent = 'Select weight:';
+        detailArea.appendChild(weightLabel);
+
+        var weightRow = document.createElement('div');
+        weightRow.className = 'weight-row';
+
+        for (var w = 0; w < WEIGHTS.length; w++) {
+          (function(wt) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'weight-btn';
+            if (productWeight[product.id] === wt) btn.className += ' chosen';
+            btn.textContent = wt >= 1000 ? (wt / 1000) + 'kg' : wt + 'g';
+            btn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              if (productWeight[product.id] === wt) {
+                productWeight[product.id] = null;
+                productQty[product.id] = 0;
+              } else {
+                productWeight[product.id] = wt;
+                if (!productQty[product.id]) productQty[product.id] = 1;
+              }
+              renderAll();
+            });
+            weightRow.appendChild(btn);
+          })(WEIGHTS[w]);
+        }
+
+        detailArea.appendChild(weightRow);
+
+        // Qty + total (only when weight is selected)
+        if (productWeight[product.id]) {
+          var qty = productQty[product.id] || 1;
+          var lineTotal = product.price_per_250g * (productWeight[product.id] / 250) * qty;
+
+          var qtyLine = document.createElement('div');
+          qtyLine.className = 'qty-line';
+
+          var qtyControls = document.createElement('div');
+          qtyControls.className = 'qty-controls';
+
+          var qtyLabel = document.createElement('span');
+          qtyLabel.style.cssText = 'font-size:0.85rem;font-weight:700;';
+          qtyLabel.textContent = 'Qty:';
+
+          var minusBtn = document.createElement('button');
+          minusBtn.type = 'button';
+          minusBtn.className = 'qty-btn';
+          minusBtn.textContent = '−';
+          minusBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (productQty[product.id] > 1) {
+              productQty[product.id]--;
+            } else {
+              productQty[product.id] = 0;
+              productWeight[product.id] = null;
+            }
+            renderAll();
+          });
+
+          var qtyVal = document.createElement('span');
+          qtyVal.className = 'qty-value';
+          qtyVal.textContent = qty;
+
+          var plusBtn = document.createElement('button');
+          plusBtn.type = 'button';
+          plusBtn.className = 'qty-btn';
+          plusBtn.textContent = '+';
+          plusBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            productQty[product.id] = (productQty[product.id] || 1) + 1;
+            renderAll();
+          });
+
+          qtyControls.appendChild(qtyLabel);
+          qtyControls.appendChild(minusBtn);
+          qtyControls.appendChild(qtyVal);
+          qtyControls.appendChild(plusBtn);
+
+          var totalSpan = document.createElement('span');
+          totalSpan.className = 'line-total';
+          totalSpan.textContent = '€' + lineTotal.toFixed(2);
+
+          qtyLine.appendChild(qtyControls);
+          qtyLine.appendChild(totalSpan);
+          detailArea.appendChild(qtyLine);
+        }
+
+        card.appendChild(detailArea);
+        grid.appendChild(card);
+      })(PRODUCTS[i]);
+    }
+  }
+
+  function renderCoupon() {
+    var toggle = document.getElementById('coupon-toggle');
+    if (toggle) toggle.checked = (hasCoupon === 'yes');
+    document.getElementById('coupon-code').disabled = (hasCoupon !== 'yes');
+  }
+
+  function renderSummary() {
+    var summary = document.getElementById('order-summary');
+    summary.innerHTML = '';
+    var grandTotal = 0;
+    var hasItem = false;
+
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      var product = PRODUCTS[i];
+      if (!productSelected[product.id] || !productWeight[product.id] || !productQty[product.id]) continue;
+
+      hasItem = true;
+      var qty = productQty[product.id];
+      var lineTotal = product.price_per_250g * (productWeight[product.id] / 250) * qty;
+      grandTotal += lineTotal;
+
+      var itemDiv = document.createElement('div');
+      itemDiv.className = 'summary-item';
+
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'summary-product-name';
+      nameDiv.textContent = product.emoji + ' ' + product.name;
+      itemDiv.appendChild(nameDiv);
+
+      var lineDiv = document.createElement('div');
+      lineDiv.className = 'summary-detail-line';
+      var weightLabel = productWeight[product.id] >= 1000 ? (productWeight[product.id] / 1000) + 'kg' : productWeight[product.id] + 'g';
+
+      var leftSpan = document.createElement('span');
+      leftSpan.textContent = weightLabel + ' × ' + qty;
+      var rightSpan = document.createElement('span');
+      rightSpan.textContent = '€' + lineTotal.toFixed(2);
+      lineDiv.appendChild(leftSpan);
+      lineDiv.appendChild(rightSpan);
+      itemDiv.appendChild(lineDiv);
+
+      summary.appendChild(itemDiv);
+    }
+
+    if (!hasItem) {
+      var emptyDiv = document.createElement('div');
+      emptyDiv.className = 'summary-empty';
+      emptyDiv.textContent = 'Select items to see your order.';
+      summary.appendChild(emptyDiv);
+    } else {
+      if (discountApplied) {
+        var subtotalDiv = document.createElement('div');
+        subtotalDiv.className = 'summary-subtotal';
+        var stLabel = document.createElement('span');
+        stLabel.textContent = 'Subtotal';
+        var stValue = document.createElement('span');
+        stValue.textContent = '€' + grandTotal.toFixed(2);
+        subtotalDiv.appendChild(stLabel);
+        subtotalDiv.appendChild(stValue);
+        summary.appendChild(subtotalDiv);
+
+        var discountAmount = grandTotal * 0.10;
+        var discountDiv = document.createElement('div');
+        discountDiv.className = 'summary-discount';
+        var dLabel = document.createElement('span');
+        dLabel.textContent = 'Coupon discount (10%)';
+        var dValue = document.createElement('span');
+        dValue.textContent = '-€' + discountAmount.toFixed(2);
+        discountDiv.appendChild(dLabel);
+        discountDiv.appendChild(dValue);
+        summary.appendChild(discountDiv);
+
+        grandTotal = grandTotal - discountAmount;
+      }
+
+      var totalDiv = document.createElement('div');
+      totalDiv.className = 'summary-total';
+      var totalLabel = document.createElement('span');
+      totalLabel.textContent = 'Total';
+      var totalValue = document.createElement('span');
+      totalValue.textContent = '€' + grandTotal.toFixed(2);
+      totalDiv.appendChild(totalLabel);
+      totalDiv.appendChild(totalValue);
+      summary.appendChild(totalDiv);
+    }
+
+    // Update WhatsApp button
+    var waBtn = document.getElementById('wa-btn');
+    var customerOk = isCustomerComplete();
+    var validationMsg = document.getElementById('customer-validation-msg');
+
+    if (hasItem && customerOk) {
+      waBtn.disabled = false;
+      waBtn.className = 'wa-button';
+    } else {
+      waBtn.disabled = true;
+      waBtn.className = 'wa-button disabled';
+    }
+
+    if (hasItem && !customerOk) {
+      validationMsg.style.display = 'block';
+    } else {
+      validationMsg.style.display = 'none';
+    }
+  }
+
+
+  /* ── WHATSAPP MESSAGE ── */
+
+  function buildWhatsAppMessage() {
+    var lines = [];
+    lines.push('*Orange Mittai Order*');
+    lines.push('');
+
+    var custName = document.getElementById('cust-name').value.trim();
+    if (custName) lines.push('Dear ' + custName + ', thank you for your order!');
+    lines.push('Please find your order summary below.');
+    lines.push('');
+    lines.push('*Order details*');
+    lines.push('');
+
+    var grandTotal = 0;
+
+    var categories = [
+      { key: 'savory', label: 'Savory' },
+      { key: 'sweets', label: 'Sweets' },
+      { key: 'assortment', label: 'Assortment' }
+    ];
+
+    for (var c = 0; c < categories.length; c++) {
+      var catItems = [];
+      for (var i = 0; i < PRODUCTS.length; i++) {
+        var product = PRODUCTS[i];
+        if (product.category !== categories[c].key) continue;
+        if (!productSelected[product.id] || !productWeight[product.id] || !productQty[product.id]) continue;
+
+        var qty = productQty[product.id];
+        var lineTotal = product.price_per_250g * (productWeight[product.id] / 250) * qty;
+        grandTotal += lineTotal;
+        var weightLabel = productWeight[product.id] >= 1000 ? (productWeight[product.id] / 1000) + 'kg' : productWeight[product.id] + 'g';
+        catItems.push({ name: product.name, weight: weightLabel, qty: qty, total: lineTotal });
+      }
+      if (catItems.length > 0) {
+        for (var ci = 0; ci < catItems.length; ci++) {
+          lines.push('*' + catItems[ci].name + '*');
+          lines.push('  ' + catItems[ci].weight + ' × ' + catItems[ci].qty + ' = €' + catItems[ci].total.toFixed(2));
+        }
+      }
+    }
+
+    var specialInstructions = document.getElementById('special-instructions').value.trim();
+    if (specialInstructions) {
+      lines.push('');
+      lines.push('Notes: ' + specialInstructions);
+    }
+
+    lines.push('');
+    if (discountApplied) {
+      var discountAmt = grandTotal * 0.10;
+      lines.push('Subtotal: €' + grandTotal.toFixed(2));
+      lines.push('Discount (10%): -€' + discountAmt.toFixed(2));
+      grandTotal = grandTotal - discountAmt;
+    }
+    lines.push('*Total: €' + grandTotal.toFixed(2) + '*');
+
+    lines.push('');
+    lines.push('*Payment Details:*');
+    lines.push('Account No: [TO BE UPDATED]');
+    lines.push('Account Name: Orange Mittai');
+
+    return lines.join('\n');
+  }
+
+
+  /* ── ORDER SUBMISSION ── */
+
+  function buildOrderData() {
+    var c = getCustomerDetails();
+    var orderLines = [];
+    var grandTotal = 0;
+
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      var product = PRODUCTS[i];
+      if (!productSelected[product.id] || !productWeight[product.id] || !productQty[product.id]) continue;
+      var qty = productQty[product.id];
+      var lineTotal = product.price_per_250g * (productWeight[product.id] / 250) * qty;
+      grandTotal += lineTotal;
+      var wLabel = productWeight[product.id] >= 1000 ? (productWeight[product.id] / 1000) + 'kg' : productWeight[product.id] + 'g';
+      orderLines.push(product.name + ' - ' + wLabel + ' x' + qty + ' = EUR ' + lineTotal.toFixed(2));
+    }
+
+    var finalTotal = discountApplied ? grandTotal * 0.90 : grandTotal;
+
+    return {
+      name: c.name,
+      phone: c.phone,
+      postal: c.postal,
+      door: c.door,
+      orderItems: orderLines.join('\n'),
+      grandTotal: 'EUR ' + finalTotal.toFixed(2),
+      couponCode: discountApplied ? couponCode : '',
+      discount: discountApplied ? '10%' : '',
+      specialInstructions: document.getElementById('special-instructions').value.trim()
+    };
+  }
+
+  function submitToGoogleSheets() {
+    if (!GOOGLE_SCRIPT_URL) return;
+    var data = buildOrderData();
+    try {
+      var formData = new FormData();
+      formData.append('payload', JSON.stringify(data));
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: formData
+      }).catch(function() {});
+    } catch (err) {}
+  }
+
+
+  /* ── EVENT LISTENERS ── */
+
+  document.getElementById('wa-btn').addEventListener('click', function() {
+    submitToGoogleSheets();
+    var msg = buildWhatsAppMessage();
+    var url = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  });
+
+  // Save & restore customer details via localStorage
+  var custFields = ['cust-name', 'cust-phone', 'cust-postal', 'cust-door'];
+  try {
+    var saved = JSON.parse(localStorage.getItem('orangemittai_customer') || '{}');
+    for (var s = 0; s < custFields.length; s++) {
+      if (saved[custFields[s]]) {
+        document.getElementById(custFields[s]).value = saved[custFields[s]];
+      }
+    }
+  } catch (e) {}
+
+  for (var f = 0; f < custFields.length; f++) {
+    document.getElementById(custFields[f]).addEventListener('input', function() {
+      try {
+        var obj = {};
+        for (var k = 0; k < custFields.length; k++) {
+          obj[custFields[k]] = document.getElementById(custFields[k]).value;
+        }
+        localStorage.setItem('orangemittai_customer', JSON.stringify(obj));
+      } catch (e) {}
+      renderSummary();
+    });
+  }
+
+  document.getElementById('coupon-toggle').addEventListener('change', function() {
+    hasCoupon = this.checked ? 'yes' : 'no';
+    var codeInput = document.getElementById('coupon-code');
+    codeInput.disabled = !this.checked;
+    if (!this.checked) {
+      couponCode = '';
+      discountApplied = false;
+      codeInput.value = '';
+      document.getElementById('coupon-status').textContent = '';
+      renderSummary();
+    } else {
+      codeInput.focus();
+    }
+  });
+
+  document.getElementById('coupon-code').addEventListener('input', function() {
+    couponCode = this.value.trim();
+    discountApplied = couponCode.length > 0;
+    var statusEl = document.getElementById('coupon-status');
+    statusEl.textContent = discountApplied ? '10% discount applied!' : '';
+    renderSummary();
+  });
+
+
+  /* ── INIT ── */
+
+  function initApp() {
+    if (!SITE_OPEN) {
+      var overlay = document.createElement('div');
+      overlay.innerHTML = '<div style="background:#fff;border-radius:16px;padding:40px;text-align:center;max-width:400px;box-shadow:0 4px 32px rgba(0,0,0,0.3);">' +
+        '<div style="font-size:3rem;margin-bottom:16px;">🍬</div>' +
+        '<div style="font-family:Fredoka One,cursive;font-size:1.5rem;color:#d4731a;margin-bottom:8px;">We\'ll be back soon!</div>' +
+        '<div style="font-size:0.95rem;color:#5c3317;">We are temporarily closed. Please check back later.</div></div>';
+      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:10000;';
+      document.body.appendChild(overlay);
+    }
+    renderAll();
+    showConfigSource();
+  }
+
+  loadConfigFromSheet();
+
+})();
+</script>
+</body>
+</html>
