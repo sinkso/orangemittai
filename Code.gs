@@ -2,31 +2,44 @@
  * Orange Mittai — Google Apps Script for Order Logging
  *
  * SETUP:
- * 1. Create a new Google Sheet with two tabs:
- *    - "Config" — columns: key, value
- *      Rows: SITE_OPEN | TRUE
- *    - "Products" — columns: id, name, emoji, category, available, price_per_250g
- *      Fill in your product data (matches the PRODUCTS array in index.html)
- *    - "Orders" — columns created automatically on first order
+ * 1. Create TWO Google Sheets:
  *
- * 2. Open Extensions → Apps Script in the Google Sheet
+ *    Sheet 1 — Products & Config (public / view-only):
+ *      - "Config" tab — columns: key, value
+ *        Rows: SITE_OPEN | TRUE
+ *      - "Products" tab — columns: id, name, emoji, category, available, price_per_250g
+ *
+ *    Sheet 2 — Orders (private, restricted access):
+ *      - "Orders" tab — created automatically on first order
+ *      - Copy its Spreadsheet ID and paste it into ORDERS_SPREADSHEET_ID below
+ *
+ * 2. Open the ORDERS spreadsheet → Extensions → Apps Script
  * 3. Paste this code into Code.gs
- * 4. Deploy → New deployment → Web app
+ * 4. Set ORDERS_SPREADSHEET_ID below to the Orders spreadsheet ID
+ * 5. Deploy → New deployment → Web app
  *    - Execute as: Me
  *    - Who has access: Anyone
- * 5. Copy the Web App URL and paste it into GOOGLE_SCRIPT_URL in index.html
- * 6. Copy the Spreadsheet ID from the sheet URL and paste it into SPREADSHEET_ID in index.html
+ * 6. Copy the Web App URL and paste it into GOOGLE_SCRIPT_URL in index.html
+ * 7. Copy the Products & Config Spreadsheet ID into SPREADSHEET_ID in index.html
  *
  * The Spreadsheet ID is the long string in the Google Sheets URL:
  *   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID_HERE/edit
  */
 
+var ORDERS_SPREADSHEET_ID = '';  // <-- paste your Orders spreadsheet ID here
 var ORDERS_SHEET_NAME = 'Orders';
+
+function getOrdersSpreadsheet() {
+  if (ORDERS_SPREADSHEET_ID) {
+    return SpreadsheetApp.openById(ORDERS_SPREADSHEET_ID);
+  }
+  return SpreadsheetApp.getActiveSpreadsheet();
+}
 
 function doPost(e) {
   try {
     var payload = JSON.parse(e.parameter.payload || '{}');
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getOrdersSpreadsheet();
     var sheet = ss.getSheetByName(ORDERS_SHEET_NAME);
 
     if (!sheet) {
