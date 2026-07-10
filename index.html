@@ -515,9 +515,9 @@ header p {
   </div>
 
   <div class="info-section">
-    <p><b>How to Order</b></p>
+    <p><b>Products / Delivery Info</b></p>
     <p>Browse our selection of <strong>savory snacks, sweets & assortments</strong>. Select your favorites, choose weight & quantity, and send your order via WhatsApp!</p>
-    <p>All items are <strong>homemade fresh</strong> with authentic South Indian recipes.</p>
+    <p>Delivered soon to your home.</p>
   </div>
 
   <div class="section-title">Savory</div>
@@ -536,7 +536,7 @@ header p {
   <div class="questions-section">
     <div class="question-group">
       <label>Any special requests or notes?</label>
-      <textarea id="special-instructions" placeholder="Allergies, delivery preferences, special requests..."></textarea>
+      <textarea id="special-instructions" placeholder="Delivery preferences, special requests..."></textarea>
     </div>
     <!-- Hidden via CSS (not markup) so the coupon JS below stays wired up and ready to flip on -->
     <div class="question-group coupon-feature-hidden">
@@ -1018,9 +1018,12 @@ header p {
       }
     }
 
+    var custAddr = getCustomerDetails();
+    lines.push('');
+    lines.push('*Delivery Address:* ' + custAddr.postal + ', Door ' + custAddr.door);
+
     var specialInstructions = document.getElementById('special-instructions').value.trim();
     if (specialInstructions) {
-      lines.push('');
       lines.push('Notes: ' + specialInstructions);
     }
 
