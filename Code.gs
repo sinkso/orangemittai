@@ -53,7 +53,7 @@ function doPost(e) {
     sheet.appendRow([
       new Date(),
       payload.name || '',
-      payload.phone || '',
+      payload.phone ? "'" + payload.phone : '',
       payload.postal || '',
       payload.door || '',
       payload.orderItems || '',
