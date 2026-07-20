@@ -158,6 +158,56 @@ header p {
 .address-row { display: flex; gap: 10px; }
 .address-row > div { flex: 1; }
 
+/* Category tiles */
+.category-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.category-tile {
+  background: var(--cream-mid);
+  border-radius: 14px;
+  padding: 14px 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.category-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.category-tile-img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.category-tile-emoji {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.6rem;
+}
+
+.category-tile-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
 /* Product cards */
 .product-grid {
   display: grid;
@@ -191,6 +241,14 @@ header p {
 .product-name {
   font-family: 'Fredoka One', cursive;
   font-size: 1rem;
+}
+
+.product-description {
+  font-size: 0.78rem;
+  font-style: italic;
+  font-weight: 500;
+  color: #8a7a68;
+  margin-top: 1px;
 }
 
 .product-price-hint {
@@ -256,6 +314,32 @@ header p {
   font-family: 'Fredoka One', cursive;
   font-size: 0.9rem;
   color: var(--olive-green);
+}
+
+.variant-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 14px 14px;
+}
+
+.variant-pill {
+  padding: 5px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.6);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.15s;
+}
+
+.variant-pill.chosen {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
 }
 
 /* Additional details */
@@ -494,43 +578,15 @@ header p {
 
 <div class="container">
 
-  <div class="section-title">Your Details</div>
-  <div class="customer-section">
-    <label for="cust-name">Name <span class="required">*</span></label>
-    <input type="text" id="cust-name" placeholder="Your name">
-
-    <label for="cust-phone">Phone Number <span class="required">*</span></label>
-    <input type="tel" id="cust-phone" placeholder="+31 6 1234 5678" value="+31 ">
-
-    <label>Delivery Address <span class="required">*</span></label>
-    <div class="address-row">
-      <div>
-        <input type="text" id="cust-postal" placeholder="Postal code (e.g. 1316 AB)">
-      </div>
-      <div>
-        <input type="text" id="cust-door" placeholder="Door # (e.g. 12)">
-      </div>
-    </div>
-    <div class="validation-msg" id="customer-validation-msg">Please fill in all your details above to place an order.</div>
-  </div>
-
   <div class="info-section">
     <p><b>Products / Delivery Info</b></p>
-    <p>Browse our selection of <strong>savory snacks, sweets & assortments</strong>. Select your favorites, choose weight & quantity, and send your order via WhatsApp!</p>
+    <p>Browse our categories below, pick your favorites, choose pack size & quantity, and send your order via WhatsApp!</p>
     <p>Delivered soon to your home.</p>
   </div>
 
-  <div class="section-title">Savory</div>
-  <div class="section-subtext">Crispy, crunchy & irresistible — made the traditional way.</div>
-  <div id="savory-grid" class="product-grid"></div>
+  <div id="category-tiles" class="category-tiles"></div>
 
-  <div class="section-title">Sweets</div>
-  <div class="section-subtext">Classic South Indian sweets for every occasion.</div>
-  <div id="sweets-grid" class="product-grid"></div>
-
-  <div class="section-title">Assortment</div>
-  <div class="section-subtext">Mixed packs & nutritious blends.</div>
-  <div id="assortment-grid" class="product-grid"></div>
+  <div id="category-sections"></div>
 
   <div class="section-title">Additional Details</div>
   <div class="questions-section">
@@ -554,6 +610,26 @@ header p {
     </div>
   </div>
 
+  <div class="section-title">Your Details</div>
+  <div class="customer-section">
+    <label for="cust-name">Name <span class="required">*</span></label>
+    <input type="text" id="cust-name" placeholder="Your name">
+
+    <label for="cust-phone">Phone Number <span class="required">*</span></label>
+    <input type="tel" id="cust-phone" placeholder="+31 6 1234 5678" value="+31 ">
+
+    <label>Delivery Address <span class="required">*</span></label>
+    <div class="address-row">
+      <div>
+        <input type="text" id="cust-postal" placeholder="Postal code (e.g. 1316 AB)">
+      </div>
+      <div>
+        <input type="text" id="cust-door" placeholder="Door # (e.g. 12)">
+      </div>
+    </div>
+    <div class="validation-msg" id="customer-validation-msg">Please fill in all your details above to place an order.</div>
+  </div>
+
   <div class="section-title">Order Summary</div>
   <div class="section-subtext">Taste the tradition of South India.</div>
   <div class="summary-section" id="order-summary"></div>
@@ -568,25 +644,63 @@ header p {
 
   var SITE_OPEN = true;
 
-  var PRODUCTS = [
-    { id: 'mixture',             name: 'Mixture',             emoji: '🍿', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'karasev',             name: 'Karasev',             emoji: '🌾', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'milagu_sev',          name: 'Milagu Sev',          emoji: '🌶️', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'karaboondi',          name: 'Karaboondi',          emoji: '🟡', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'seeval',              name: 'Seeval',              emoji: '🍜', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'ribbon_seeval',       name: 'Ribbon Seeval',       emoji: '🎀', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'onion_murukku',       name: 'Onion Murukku',       emoji: '🧅', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'garlic_murukku',      name: 'Garlic Murukku',      emoji: '🧄', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'nendram_chips',       name: 'Nendram Chips',       emoji: '🍌', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'kolli_chips',         name: 'Kolli Chips',         emoji: '🍃', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'kappa_chips',         name: 'Kappa Chips',         emoji: '🥔', category: 'savory',     available: true,  price: 5.00 },
-    { id: 'chikki_byte',         name: 'Chikki Byte',         emoji: '🥜', category: 'sweets',     available: true,  price: 6.00 },
-    { id: 'smashed_chikki_byte', name: 'Smashed Chikki Byte', emoji: '🥜', category: 'sweets',     available: true,  price: 6.00 },
-    { id: 'iruttukadai_halwa',   name: 'Iruttukadai Halwa',   emoji: '🍮', category: 'sweets',     available: true,  price: 8.00 },
-    { id: 'abc_mix',             name: 'ABC Mix',             emoji: '🎁', category: 'assortment', available: true,  price: 6.00 },
-    { id: 'growlac',             name: 'Growlac',             emoji: '🌿', category: 'assortment', available: true,  price: 7.00 },
-    { id: 'health_mix',          name: 'Health Mix',          emoji: '💪', category: 'assortment', available: true,  price: 7.00 }
+  var CATEGORIES = [
+    { id: 'savouries',    name: 'Savouries',    emoji: '🌾', image: '' },
+    { id: 'sweets',       name: 'Sweets',       emoji: '🍬', image: '' },
+    { id: 'kerala_chips', name: 'Kerala Chips', emoji: '🍌', image: '' },
+    { id: 'specials',     name: 'Specials',     emoji: '🍮', image: '' },
+    { id: 'health',       name: 'Health',       emoji: '💪', image: '' },
+    { id: 'chikki_bites', name: 'Chikki Bites', emoji: '🥜', image: '' },
+    { id: 'brews',        name: 'Brews',        emoji: '☕', image: '' }
   ];
+
+  var PRODUCTS = [
+    { id: 'sattur_karasevu',       name: 'Sattur Karasevu',              emoji: '🌾', category: 'savouries',    available: true },
+    { id: 'sattur_milagusevu',     name: 'Sattur Milagusevu',            emoji: '🌶️', category: 'savouries',    available: true },
+    { id: 'sattur_seeval',         name: 'Sattur Seeval',                emoji: '🍜', category: 'savouries',    available: true },
+    { id: 'sattur_ribbon_seeval',  name: 'Sattur Ribbon Seeval',         emoji: '🎀', category: 'savouries',    available: true },
+    { id: 'sattur_mixture',        name: 'Sattur Mixture',               emoji: '🍿', category: 'savouries',    available: true },
+    { id: 'bombay_mixture',        name: 'Bombay Mixture',               emoji: '🥣', category: 'savouries',    available: true },
+    { id: 'murukku',               name: 'Murukku',                      emoji: '🌀', category: 'savouries',    available: true },
+    { id: 'onion_murukku',         name: 'Onion Murukku',                emoji: '🧅', category: 'savouries',    available: true },
+    { id: 'home_made_laddoo',      name: 'Home Made Laddoo',             emoji: '🍬', category: 'sweets',       available: true },
+    { id: 'kerala_neendran_chips', name: 'Kerala Neendran Chips (Salt)', emoji: '🍌', category: 'kerala_chips', available: true },
+    { id: 'kerala_kolli_chips',    name: 'Kerala Kolli Chips',           emoji: '🍃', category: 'kerala_chips', available: true },
+    { id: 'iruttukadai_halwa',     name: 'Iruttukadai Halwa',            emoji: '🍮', category: 'specials',     available: true },
+    { id: 'health_mix',            name: 'Health Mix',                  emoji: '💪', category: 'health',       available: true },
+    { id: 'growlac',               name: 'Growlac',                      emoji: '🌿', category: 'health',       available: true },
+    { id: 'abc_powder',            name: 'ABC Powder',                   emoji: '🎁', category: 'health',       available: true },
+    { id: 'sattur_kadala_mittai',  name: 'Sattur Kadala Mittai',         emoji: '🥜', category: 'chikki_bites', available: true },
+    { id: 'sattur_koko_mittai',    name: 'Sattur Koko Mittai',           emoji: '🍫', category: 'chikki_bites', available: true },
+    { id: 'masala_tea',            name: 'Masala Tea - South Indian Style', emoji: '☕', category: 'brews',     available: true },
+    { id: 'filter_coffee',         name: 'Coffee - South Indian Style',  emoji: '☕', category: 'brews',        available: true },
+    { id: 'thermo_flask_rental',   name: 'Thermo Flask 10L Rental',      emoji: '🧊', category: 'brews',        available: true }
+  ];
+
+  // Multiple weight/pack options per product. Overridden by the "Variants" tab
+  // (columns: product_id, label, price) when the sheet loads successfully.
+  var VARIANTS_BY_PRODUCT = {
+    sattur_karasevu:       [{ label: '250g', price: 3.50 }],
+    sattur_milagusevu:     [{ label: '250g', price: 3.50 }],
+    sattur_seeval:         [{ label: '250g', price: 3.50 }],
+    sattur_ribbon_seeval:  [{ label: '250g', price: 3.50 }],
+    sattur_mixture:        [{ label: '250g', price: 3.50 }],
+    bombay_mixture:        [{ label: '250g', price: 3.50 }],
+    murukku:               [{ label: '250g', price: 3.50 }],
+    onion_murukku:         [{ label: '250g', price: 3.50 }],
+    home_made_laddoo:      [{ label: '250g', price: 3.50 }],
+    kerala_neendran_chips: [{ label: '200g', price: 3.50 }],
+    kerala_kolli_chips:    [{ label: '200g', price: 3.50 }],
+    iruttukadai_halwa:     [{ label: '250g', price: 4.50 }],
+    health_mix:            [{ label: '250g', price: 3.50 }],
+    growlac:               [{ label: '250g', price: 4.50 }],
+    abc_powder:            [{ label: '250g', price: 4.50 }],
+    sattur_kadala_mittai:  [{ label: '250g', price: 3.50 }],
+    sattur_koko_mittai:    [{ label: '250g', price: 0 }],
+    masala_tea:            [{ label: 'Mini (25 people)', price: 37.50 }, { label: 'Medium (50 people)', price: 70.00 }, { label: 'Full (100 people)', price: 135.00 }],
+    filter_coffee:         [{ label: 'Mini (25 people)', price: 37.50 }, { label: 'Medium (50 people)', price: 70.00 }, { label: 'Full (100 people)', price: 135.00 }],
+    thermo_flask_rental:   [{ label: 'Per day', price: 25.00 }]
+  };
 
   var WA_NUMBER = '31613972821';
 
@@ -597,6 +711,15 @@ header p {
   var SPREADSHEET_ID = '1RzNUbft9iZleOaHv5lWxG27pvNMnICtQZW5z31HppVQ';
   var CONFIG_CSV_URL   = SPREADSHEET_ID ? 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Config' : '';
   var PRODUCTS_CSV_URL = SPREADSHEET_ID ? 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Products' : '';
+  var PAYMENT_CSV_URL  = SPREADSHEET_ID ? 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Payment' : '';
+  var CATEGORIES_CSV_URL = SPREADSHEET_ID ? 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Categories' : '';
+
+  // Payment Details shown at the end of the WhatsApp order message.
+  // Overridden by the "Payment" tab's label/value rows when the sheet loads successfully.
+  var PAYMENT_ROWS = [
+    { label: 'Account No', value: '[TO BE UPDATED]' },
+    { label: 'Account Name', value: 'Orange Mittai' }
+  ];
 
 
   /* ── CSV PARSER ── */
@@ -648,29 +771,74 @@ header p {
     return result;
   }
 
-  function applyConfigFromSheet(configRows, productRows) {
+  function applyConfigFromSheet(configRows, productRows, paymentRows, categoryRows) {
     for (var i = 0; i < configRows.length; i++) {
       var key = (configRows[i].key || '').toUpperCase();
       var val = configRows[i].value || '';
       if (key === 'SITE_OPEN') SITE_OPEN = val.toUpperCase() === 'TRUE';
     }
 
+    // Products tab: one row per variant. A product with multiple weights/pack
+    // sizes repeats its id/name/emoji/category/available across multiple rows,
+    // each with its own label + price.
     if (productRows && productRows.length > 0) {
       var newProducts = [];
+      var newVariants = {};
+      var seenIds = {};
       for (var p = 0; p < productRows.length; p++) {
         var r = productRows[p];
         var pid = (r.id || '').toLowerCase().trim();
         if (!pid) continue;
-        newProducts.push({
-          id: pid,
-          name: r.name || pid,
-          emoji: r.emoji || '🍬',
-          category: (r.category || 'savory').toLowerCase().trim(),
-          available: (r.available || '').toUpperCase() === 'TRUE',
-          price: parseFloat(r.price) || 0
-        });
+
+        if (!seenIds[pid]) {
+          seenIds[pid] = true;
+          newProducts.push({
+            id: pid,
+            name: r.name || pid,
+            emoji: r.emoji || '🍬',
+            category: (r.category || '').toLowerCase().trim(),
+            available: (r.available || '').toUpperCase() === 'TRUE'
+          });
+        }
+
+        var label = (r.label || '').trim();
+        if (label) {
+          if (!newVariants[pid]) newVariants[pid] = [];
+          newVariants[pid].push({
+            label: label,
+            price: parseFloat(r.price) || 0,
+            description: (r.description || '').trim()
+          });
+        }
       }
       if (newProducts.length > 0) PRODUCTS = newProducts;
+      if (Object.keys(newVariants).length > 0) VARIANTS_BY_PRODUCT = newVariants;
+    }
+
+    if (categoryRows && categoryRows.length > 0) {
+      var newCategories = [];
+      for (var g = 0; g < categoryRows.length; g++) {
+        var cr = categoryRows[g];
+        var cid = (cr.id || '').toLowerCase().trim();
+        if (!cid) continue;
+        newCategories.push({
+          id: cid,
+          name: cr.name || cid,
+          emoji: cr.emoji || '🍬',
+          image: cr.image_url || cr.image || ''
+        });
+      }
+      if (newCategories.length > 0) CATEGORIES = newCategories;
+    }
+
+    if (paymentRows && paymentRows.length > 0) {
+      var newPayment = [];
+      for (var m = 0; m < paymentRows.length; m++) {
+        var label = (paymentRows[m].label || '').trim();
+        if (!label) continue;
+        newPayment.push({ label: label, value: (paymentRows[m].value || '').trim() });
+      }
+      if (newPayment.length > 0) PAYMENT_ROWS = newPayment;
     }
   }
 
@@ -692,14 +860,14 @@ header p {
 
     document.querySelector('.container').style.opacity = '0.4';
 
-    var configDone = false, productsDone = false;
-    var configRows = [], productRows = [];
+    var configDone = false, productsDone = false, paymentDone = false, categoriesDone = false;
+    var configRows = [], productRows = [], paymentRows = [], categoryRows = [];
     var sheetLoaded = false;
 
     function checkDone() {
-      if (configDone && productsDone) {
+      if (configDone && productsDone && paymentDone && categoriesDone) {
         if (sheetLoaded) {
-          applyConfigFromSheet(configRows, productRows);
+          applyConfigFromSheet(configRows, productRows, paymentRows, categoryRows);
           configSource = 'sheet';
         } else {
           configSource = 'defaults';
@@ -738,15 +906,58 @@ header p {
       productsDone = true;
       checkDone();
     });
+
+    fetch(PAYMENT_CSV_URL).then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function(text) {
+      if (text.trim().charAt(0) !== '<') {
+        paymentRows = parseCSV(text);
+        sheetLoaded = true;
+      }
+    }).catch(function(err) {
+      console.warn('Payment fetch failed:', err);
+    }).finally(function() {
+      paymentDone = true;
+      checkDone();
+    });
+
+    fetch(CATEGORIES_CSV_URL).then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    }).then(function(text) {
+      if (text.trim().charAt(0) !== '<') {
+        categoryRows = parseCSV(text);
+        sheetLoaded = true;
+      }
+    }).catch(function(err) {
+      console.warn('Categories fetch failed:', err);
+    }).finally(function() {
+      categoriesDone = true;
+      checkDone();
+    });
   }
 
 
   /* ── STATE ── */
 
-  var productQty      = {};
+  var productQty        = {};
+  var productVariantIdx = {};
   var hasCoupon       = null;
   var couponCode      = '';
   var discountApplied = false;
+
+  function getVariants(productId) {
+    var variants = VARIANTS_BY_PRODUCT[productId];
+    return (variants && variants.length > 0) ? variants : [{ label: 'pack', price: 0 }];
+  }
+
+  function getSelectedVariant(productId) {
+    var variants = getVariants(productId);
+    var idx = productVariantIdx[productId] || 0;
+    if (idx >= variants.length) idx = 0;
+    return variants[idx];
+  }
 
 
   /* ── VALIDATION ── */
@@ -769,103 +980,215 @@ header p {
   /* ── RENDER ── */
 
   function renderAll() {
-    renderCategoryGrid('savory', 'savory-grid');
-    renderCategoryGrid('sweets', 'sweets-grid');
-    renderCategoryGrid('assortment', 'assortment-grid');
+    renderCategoryTiles();
+    renderCategorySections();
     renderCoupon();
     renderSummary();
   }
 
-  function renderCategoryGrid(category, gridId) {
-    var grid = document.getElementById(gridId);
-    grid.innerHTML = '';
-
+  function categoryHasProducts(categoryId) {
     for (var i = 0; i < PRODUCTS.length; i++) {
-      if (PRODUCTS[i].category !== category) continue;
-      (function(product) {
-        var card = document.createElement('div');
-        card.className = 'product-card';
-        if (!product.available) card.className += ' unavailable';
+      if (PRODUCTS[i].category === categoryId) return true;
+    }
+    return false;
+  }
 
-        var header = document.createElement('div');
-        header.className = 'product-header';
+  function renderCategoryTiles() {
+    var wrap = document.getElementById('category-tiles');
+    wrap.innerHTML = '';
 
-        var emojiSpan = document.createElement('span');
-        emojiSpan.className = 'product-emoji';
-        emojiSpan.textContent = product.emoji;
+    for (var i = 0; i < CATEGORIES.length; i++) {
+      (function(cat) {
+        if (!categoryHasProducts(cat.id)) return;
 
-        var infoDiv = document.createElement('div');
-        infoDiv.className = 'product-info';
+        var tile = document.createElement('div');
+        tile.className = 'category-tile';
+        tile.addEventListener('click', function() {
+          var section = document.getElementById('cat-section-' + cat.id);
+          if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
 
-        var nameDiv = document.createElement('div');
-        nameDiv.className = 'product-name';
-        nameDiv.textContent = product.name;
-
-        var priceHint = document.createElement('div');
-        priceHint.className = 'product-price-hint';
-        priceHint.textContent = '€' + product.price.toFixed(2) + ' / pack';
-
-        infoDiv.appendChild(nameDiv);
-        infoDiv.appendChild(priceHint);
-
-        header.appendChild(emojiSpan);
-        header.appendChild(infoDiv);
-
-        if (!product.available) {
-          var unavailLabel = document.createElement('span');
-          unavailLabel.className = 'unavailable-label';
-          unavailLabel.textContent = 'Unavailable';
-          header.appendChild(unavailLabel);
+        if (cat.image) {
+          var img = document.createElement('img');
+          img.className = 'category-tile-img';
+          img.src = cat.image;
+          img.alt = cat.name;
+          img.addEventListener('error', function() {
+            var fallback = document.createElement('div');
+            fallback.className = 'category-tile-emoji';
+            fallback.textContent = cat.emoji || '🍬';
+            tile.replaceChild(fallback, img);
+          });
+          tile.appendChild(img);
         } else {
-          var qty = productQty[product.id] || 0;
-
-          var qtyWrap = document.createElement('div');
-          qtyWrap.className = 'qty-wrap';
-
-          var qtyControls = document.createElement('div');
-          qtyControls.className = 'qty-controls';
-
-          var minusBtn = document.createElement('button');
-          minusBtn.type = 'button';
-          minusBtn.className = 'qty-btn';
-          minusBtn.textContent = '−';
-          minusBtn.addEventListener('click', function() {
-            productQty[product.id] = Math.max(0, (productQty[product.id] || 0) - 1);
-            renderAll();
-          });
-
-          var qtyVal = document.createElement('span');
-          qtyVal.className = 'qty-value';
-          qtyVal.textContent = qty;
-
-          var plusBtn = document.createElement('button');
-          plusBtn.type = 'button';
-          plusBtn.className = 'qty-btn';
-          plusBtn.textContent = '+';
-          plusBtn.addEventListener('click', function() {
-            productQty[product.id] = (productQty[product.id] || 0) + 1;
-            renderAll();
-          });
-
-          qtyControls.appendChild(minusBtn);
-          qtyControls.appendChild(qtyVal);
-          qtyControls.appendChild(plusBtn);
-          qtyWrap.appendChild(qtyControls);
-
-          if (qty > 0) {
-            var totalSpan = document.createElement('span');
-            totalSpan.className = 'line-total';
-            totalSpan.textContent = '€' + (product.price * qty).toFixed(2);
-            qtyWrap.appendChild(totalSpan);
-          }
-
-          header.appendChild(qtyWrap);
+          var emojiDiv = document.createElement('div');
+          emojiDiv.className = 'category-tile-emoji';
+          emojiDiv.textContent = cat.emoji || '🍬';
+          tile.appendChild(emojiDiv);
         }
 
-        card.appendChild(header);
-        grid.appendChild(card);
-      })(PRODUCTS[i]);
+        var nameDiv = document.createElement('div');
+        nameDiv.className = 'category-tile-name';
+        nameDiv.textContent = cat.name;
+        tile.appendChild(nameDiv);
+
+        wrap.appendChild(tile);
+      })(CATEGORIES[i]);
     }
+
+    if (wrap.children.length % 3 === 1) {
+      wrap.lastChild.style.gridColumn = '2';
+    }
+  }
+
+  function renderCategorySections() {
+    var wrap = document.getElementById('category-sections');
+    wrap.innerHTML = '';
+
+    for (var i = 0; i < CATEGORIES.length; i++) {
+      var cat = CATEGORIES[i];
+      var catProducts = [];
+      for (var p = 0; p < PRODUCTS.length; p++) {
+        if (PRODUCTS[p].category === cat.id) catProducts.push(PRODUCTS[p]);
+      }
+      if (catProducts.length === 0) continue;
+
+      var section = document.createElement('div');
+      section.id = 'cat-section-' + cat.id;
+
+      var title = document.createElement('div');
+      title.className = 'section-title';
+      title.textContent = cat.name;
+      section.appendChild(title);
+
+      var grid = document.createElement('div');
+      grid.className = 'product-grid';
+      for (var j = 0; j < catProducts.length; j++) {
+        grid.appendChild(renderProductCard(catProducts[j]));
+      }
+      section.appendChild(grid);
+
+      wrap.appendChild(section);
+    }
+  }
+
+  function renderProductCard(product) {
+    var card = document.createElement('div');
+    card.className = 'product-card';
+    if (!product.available) card.className += ' unavailable';
+
+    var header = document.createElement('div');
+    header.className = 'product-header';
+
+    var emojiSpan = document.createElement('span');
+    emojiSpan.className = 'product-emoji';
+    emojiSpan.textContent = product.emoji;
+
+    var infoDiv = document.createElement('div');
+    infoDiv.className = 'product-info';
+
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'product-name';
+    nameDiv.textContent = product.name;
+
+    var variants = getVariants(product.id);
+    var selected = getSelectedVariant(product.id);
+
+    var priceHint = document.createElement('div');
+    priceHint.className = 'product-price-hint';
+    priceHint.textContent = '€' + selected.price.toFixed(2) + ' / ' + selected.label;
+
+    infoDiv.appendChild(nameDiv);
+
+    if (selected.description) {
+      var descDiv = document.createElement('div');
+      descDiv.className = 'product-description';
+      descDiv.textContent = selected.description;
+      infoDiv.appendChild(descDiv);
+    }
+
+    infoDiv.appendChild(priceHint);
+
+    header.appendChild(emojiSpan);
+    header.appendChild(infoDiv);
+
+    if (!product.available) {
+      var unavailLabel = document.createElement('span');
+      unavailLabel.className = 'unavailable-label';
+      unavailLabel.textContent = 'Unavailable';
+      header.appendChild(unavailLabel);
+    } else {
+      var qty = productQty[product.id] || 0;
+
+      var qtyWrap = document.createElement('div');
+      qtyWrap.className = 'qty-wrap';
+
+      var qtyControls = document.createElement('div');
+      qtyControls.className = 'qty-controls';
+
+      var minusBtn = document.createElement('button');
+      minusBtn.type = 'button';
+      minusBtn.className = 'qty-btn';
+      minusBtn.textContent = '−';
+      minusBtn.addEventListener('click', function() {
+        productQty[product.id] = Math.max(0, (productQty[product.id] || 0) - 1);
+        renderAll();
+      });
+
+      var qtyVal = document.createElement('span');
+      qtyVal.className = 'qty-value';
+      qtyVal.textContent = qty;
+
+      var plusBtn = document.createElement('button');
+      plusBtn.type = 'button';
+      plusBtn.className = 'qty-btn';
+      plusBtn.textContent = '+';
+      plusBtn.addEventListener('click', function() {
+        productQty[product.id] = (productQty[product.id] || 0) + 1;
+        renderAll();
+      });
+
+      qtyControls.appendChild(minusBtn);
+      qtyControls.appendChild(qtyVal);
+      qtyControls.appendChild(plusBtn);
+      qtyWrap.appendChild(qtyControls);
+
+      if (qty > 0) {
+        var totalSpan = document.createElement('span');
+        totalSpan.className = 'line-total';
+        totalSpan.textContent = '€' + (selected.price * qty).toFixed(2);
+        qtyWrap.appendChild(totalSpan);
+      }
+
+      header.appendChild(qtyWrap);
+    }
+
+    card.appendChild(header);
+
+    if (variants.length > 1) {
+      var selectedIdx = productVariantIdx[product.id] || 0;
+      if (selectedIdx >= variants.length) selectedIdx = 0;
+
+      var variantRow = document.createElement('div');
+      variantRow.className = 'variant-row';
+      for (var v = 0; v < variants.length; v++) {
+        (function(idx) {
+          var pill = document.createElement('button');
+          pill.type = 'button';
+          pill.className = 'variant-pill';
+          if (idx === selectedIdx) pill.className += ' chosen';
+          pill.textContent = variants[idx].label;
+          pill.addEventListener('click', function() {
+            productVariantIdx[product.id] = idx;
+            renderAll();
+          });
+          variantRow.appendChild(pill);
+        })(v);
+      }
+      card.appendChild(variantRow);
+    }
+
+    return card;
   }
 
   function renderCoupon() {
@@ -886,7 +1209,8 @@ header p {
 
       hasItem = true;
       var qty = productQty[product.id];
-      var lineTotal = product.price * qty;
+      var selected = getSelectedVariant(product.id);
+      var lineTotal = selected.price * qty;
       grandTotal += lineTotal;
 
       var itemDiv = document.createElement('div');
@@ -901,7 +1225,7 @@ header p {
       lineDiv.className = 'summary-detail-line';
 
       var leftSpan = document.createElement('span');
-      leftSpan.textContent = 'Qty ' + qty;
+      leftSpan.textContent = selected.label + ' × ' + qty;
       var rightSpan = document.createElement('span');
       rightSpan.style.color = 'var(--olive-green)';
       rightSpan.style.fontWeight = '700';
@@ -992,28 +1316,23 @@ header p {
 
     var grandTotal = 0;
 
-    var categories = [
-      { key: 'savory', label: 'Savory' },
-      { key: 'sweets', label: 'Sweets' },
-      { key: 'assortment', label: 'Assortment' }
-    ];
-
-    for (var c = 0; c < categories.length; c++) {
+    for (var c = 0; c < CATEGORIES.length; c++) {
       var catItems = [];
       for (var i = 0; i < PRODUCTS.length; i++) {
         var product = PRODUCTS[i];
-        if (product.category !== categories[c].key) continue;
+        if (product.category !== CATEGORIES[c].id) continue;
         if (!productQty[product.id]) continue;
 
         var qty = productQty[product.id];
-        var lineTotal = product.price * qty;
+        var selected = getSelectedVariant(product.id);
+        var lineTotal = selected.price * qty;
         grandTotal += lineTotal;
-        catItems.push({ name: product.name, qty: qty, total: lineTotal });
+        catItems.push({ name: product.name, label: selected.label, qty: qty, total: lineTotal });
       }
       if (catItems.length > 0) {
         for (var ci = 0; ci < catItems.length; ci++) {
           lines.push('*' + catItems[ci].name + '*');
-          lines.push('  Qty ' + catItems[ci].qty + ' = €' + catItems[ci].total.toFixed(2));
+          lines.push('  ' + catItems[ci].label + ' × ' + catItems[ci].qty + ' = €' + catItems[ci].total.toFixed(2));
         }
       }
     }
@@ -1038,8 +1357,9 @@ header p {
 
     lines.push('');
     lines.push('*Payment Details:*');
-    lines.push('Account No: [TO BE UPDATED]');
-    lines.push('Account Name: Orange Mittai');
+    for (var pd = 0; pd < PAYMENT_ROWS.length; pd++) {
+      lines.push(PAYMENT_ROWS[pd].label + ': ' + PAYMENT_ROWS[pd].value);
+    }
 
     return lines.join('\n');
   }
@@ -1056,9 +1376,10 @@ header p {
       var product = PRODUCTS[i];
       if (!productQty[product.id]) continue;
       var qty = productQty[product.id];
-      var lineTotal = product.price * qty;
+      var selected = getSelectedVariant(product.id);
+      var lineTotal = selected.price * qty;
       grandTotal += lineTotal;
-      orderLines.push(product.name + ' - x' + qty + ' = EUR ' + lineTotal.toFixed(2));
+      orderLines.push(product.name + ' - ' + selected.label + ' x' + qty + ' = EUR ' + lineTotal.toFixed(2));
     }
 
     var finalTotal = discountApplied ? grandTotal * 0.90 : grandTotal;

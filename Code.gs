@@ -7,7 +7,11 @@
  *    Sheet 1 — Products & Config (public / view-only):
  *      - "Config" tab — columns: key, value
  *        Rows: SITE_OPEN | TRUE
- *      - "Products" tab — columns: id, name, emoji, category, available, price_per_250g
+ *      - "Categories" tab — columns: id, name, image_url
+ *      - "Products" tab — columns: id, name, emoji, category, available, label, price, description
+ *        One row per weight/pack option; repeat id/name/emoji/category/available
+ *        across rows for products with multiple options.
+ *      - "Payment" tab — columns: label, value (rendered as-is in the WhatsApp message)
  *      - Copy its Spreadsheet ID into SPREADSHEET_ID in index.html
  *
  *    Sheet 2 — Orders (private, restricted access):
