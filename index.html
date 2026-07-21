@@ -72,18 +72,37 @@ header p {
 
 .info-section {
   background: linear-gradient(135deg, #fef6ec, #faecd8);
-  border-radius: 12px;
-  padding: 14px 16px;
+  border-radius: 16px;
+  padding: 28px 22px;
   margin-top: 24px;
   margin-bottom: 8px;
   border-left: 4px solid var(--orange);
-  font-size: 0.88rem;
-  line-height: 1.55;
 }
 
-.info-section strong { color: var(--brown); }
-.info-section p { margin-bottom: 6px; }
-.info-section p:last-child { margin-bottom: 0; }
+.info-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 8px;
+}
+
+.info-headline {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  color: var(--brown);
+  margin-bottom: 10px;
+}
+
+.info-subtext {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text);
+  opacity: 0.85;
+  margin-bottom: 18px;
+}
 
 .container {
   max-width: 600px;
@@ -96,6 +115,10 @@ header p {
   font-size: 1.25rem;
   margin: 24px 0 12px;
   color: var(--text);
+}
+
+[id^="cat-section-"] {
+  scroll-margin-top: 16px;
 }
 
 .section-subtext {
@@ -579,9 +602,9 @@ header p {
 <div class="container">
 
   <div class="info-section">
-    <p><b>Products / Delivery Info</b></p>
-    <p>Browse our categories below, pick your favorites, choose pack size & quantity, and send your order via WhatsApp!</p>
-    <p>Delivered soon to your home.</p>
+    <div class="info-kicker">Homemade &amp; Authentic</div>
+    <div class="info-headline">Snacks &amp; Sweets</div>
+    <div class="info-subtext">South Indian snacks and sweets, packed fresh and delivered soon to your door. Pick your favorites, choose your pack size, and order via WhatsApp!</div>
   </div>
 
   <div id="category-tiles" class="category-tiles"></div>
