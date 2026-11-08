@@ -64,7 +64,7 @@ header h1 {
 }
 
 header p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   opacity: 0.9;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -80,20 +80,20 @@ header p {
 }
 
 .info-kicker {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--orange);
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .info-headline {
   font-family: 'Fredoka One', cursive;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   line-height: 1.2;
   color: var(--brown);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .info-subtext {
@@ -103,6 +103,9 @@ header p {
   opacity: 0.85;
   margin-bottom: 18px;
 }
+
+.info-subtext p { margin: 0 0 10px; }
+.info-subtext p:last-child { margin-bottom: 0; }
 
 .container {
   max-width: 600px;
@@ -578,7 +581,7 @@ header p {
   header img.logo { width: 76px; height: 76px; }
   header { padding: 14px 12px; }
   .header-inner { gap: 10px; }
-  header p { font-size: 0.8rem; }
+  header p { font-size: 0.9rem; }
 }
 @media (max-width: 400px) {
   header h1 { font-size: 1.3rem; }
@@ -591,10 +594,10 @@ header p {
 
 <header>
   <div class="header-inner">
-    <img src="orange_mittai_logo.png" alt="Orange Mittai Logo" class="logo">
+    <img id="site-logo" src="orange_mittai_logo.png" alt="Orange Mittai Logo" class="logo">
     <div class="header-text">
       <h1>Orange Mittai</h1>
-      <p><b>Authentic South Indian Snacks & Sweets</b></p>
+      <p><b id="site-subheading">Traditions, Tastes &amp; Celebrations</b></p>
     </div>
   </div>
 </header>
@@ -602,9 +605,15 @@ header p {
 <div class="container">
 
   <div class="info-section">
-    <div class="info-kicker">Homemade &amp; Authentic</div>
-    <div class="info-headline">Snacks &amp; Sweets</div>
-    <div class="info-subtext">South Indian snacks and sweets, packed fresh and delivered soon to your door. Pick your favorites, choose your pack size, and order via WhatsApp!</div>
+    <div class="info-headline" id="intro-title">Welcome to Orange Mittai!</div>
+    <div class="info-kicker" id="intro-subtitle">Traditions, Tastes &amp; Celebrations</div>
+    <div class="info-subtext" id="intro-details">
+      <p>Traditions that bring us together. Tastes that feel like home. Celebrations that create lasting memories.</p>
+      <p>At Orange Mittai, we bring the richness of Indian traditions with authentic sweets, savouries, snacks, imported favourites, local treats and Indian hi-style.</p>
+      <p>From everyday essentials to festive treats, we make every moment more special with flavours you love and traditions you cherish.</p>
+      <p>Celebrate More with Orange Mittai!</p>
+      <p>Make every occasion memorable with our party food, snacks and rental essentials, including tents, tables, chairs, chafing dishes and more.</p>
+    </div>
   </div>
 
   <div id="category-tiles" class="category-tiles"></div>
@@ -748,13 +757,13 @@ header p {
   /* ── CSV PARSER ── */
 
   function parseCSV(text) {
-    var lines = text.split('\n');
-    if (lines.length < 2) return [];
-    var headers = parseCSVRow(lines[0]);
+    var records = parseCSVRecords(text);
+    if (records.length < 2) return [];
+    var headers = records[0];
     var rows = [];
-    for (var i = 1; i < lines.length; i++) {
-      if (lines[i].trim() === '') continue;
-      var values = parseCSVRow(lines[i]);
+    for (var i = 1; i < records.length; i++) {
+      var values = records[i];
+      if (values.join('').trim() === '') continue;
       var row = {};
       for (var j = 0; j < headers.length; j++) {
         row[headers[j].toLowerCase().trim()] = (values[j] || '').trim();
@@ -764,14 +773,17 @@ header p {
     return rows;
   }
 
-  function parseCSVRow(line) {
+  // Splits CSV text into records of fields. Newlines inside quoted fields
+  // (multi-line sheet cells) stay part of the field.
+  function parseCSVRecords(text) {
+    var records = [];
     var result = [];
     var current = '';
     var inQuotes = false;
-    for (var i = 0; i < line.length; i++) {
-      var ch = line[i];
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
       if (inQuotes) {
-        if (ch === '"' && i + 1 < line.length && line[i + 1] === '"') {
+        if (ch === '"' && i + 1 < text.length && text[i + 1] === '"') {
           current += '"';
           i++;
         } else if (ch === '"') {
@@ -785,13 +797,40 @@ header p {
         } else if (ch === ',') {
           result.push(current);
           current = '';
-        } else {
+        } else if (ch === '\n') {
+          result.push(current);
+          records.push(result);
+          result = [];
+          current = '';
+        } else if (ch !== '\r') {
           current += ch;
         }
       }
     }
     result.push(current);
-    return result;
+    records.push(result);
+    return records;
+  }
+
+  // Accepts either a direct image URL or an ImgBB page link (ibb.co/<id>),
+  // which can't be used as an <img> src. For page links, fall back to the
+  // local logo file.
+  function resolveLogoUrl(url) {
+    if (/^https?:\/\/(www\.)?ibb\.co\//i.test(url)) return '';
+    return url;
+  }
+
+  function applyIntroDetails(text) {
+    var el = document.getElementById('intro-details');
+    el.innerHTML = '';
+    var paragraphs = text.split(/\n\s*\n/);
+    for (var i = 0; i < paragraphs.length; i++) {
+      var para = paragraphs[i].trim();
+      if (!para) continue;
+      var p = document.createElement('p');
+      p.textContent = para;
+      el.appendChild(p);
+    }
   }
 
   function applyConfigFromSheet(configRows, productRows, paymentRows, categoryRows) {
@@ -799,6 +838,15 @@ header p {
       var key = (configRows[i].key || '').toUpperCase();
       var val = configRows[i].value || '';
       if (key === 'SITE_OPEN') SITE_OPEN = val.toUpperCase() === 'TRUE';
+      if (!val) continue;
+      if (key === 'LOGO') {
+        var logoUrl = resolveLogoUrl(val);
+        if (logoUrl) document.getElementById('site-logo').src = logoUrl;
+      }
+      if (key === 'SUBHEADING') document.getElementById('site-subheading').textContent = val;
+      if (key === 'INTRO_TITLE') document.getElementById('intro-title').textContent = val;
+      if (key === 'INTRO_SUBTITLE') document.getElementById('intro-subtitle').textContent = val;
+      if (key === 'INTRO_DETAILS') applyIntroDetails(val);
     }
 
     // Products tab: one row per variant. A product with multiple weights/pack
